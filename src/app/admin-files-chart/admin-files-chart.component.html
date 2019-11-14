@@ -1,0 +1,92 @@
+<div>
+  <div class="top-bar">
+    <d-search
+      [placeholder]="'请输入关键词，按enter键搜索'"
+      [size]="'sm'"
+      (searchFn)="onSearch($event)"
+    ></d-search>
+    <div class="right">
+      <d-button icon="icon-add-member" bsStyle="text-dark" (click)="addMember()">
+        添加成员
+      </d-button>
+      <d-button icon="icon-qrcode" bsStyle="text-dark">
+        通过链接邀请
+      </d-button>
+      <d-button icon="icon-help" bsStyle="text-dark">
+        角色权限说明
+      </d-button>
+    </div>
+  </div>
+
+  <div class="chart">
+    <d-data-table
+      #datatable
+      [dataSource]="getBasicDataSource()"
+      [scrollable]="true"
+      [checkable]="true"
+      [type]="'striped'"
+    >
+      <d-column
+        *ngFor="let colOption of dataTableOptions.columns"
+        [field]="colOption.field"
+        [header]="colOption.header"
+        [fieldType]="colOption.fieldType"
+        [width]="'150px'"
+      >
+      </d-column>
+      <d-column
+        [width]="'100px'"
+        [header]="'操作'"
+      >
+        <d-cell>
+          <ng-template let-rowIndex="rowIndex" let-rowItem="rowItem">
+            <div
+              class="icon icon-edit"
+              (click)="editItem(rowIndex, rowItem)"
+            ></div>
+            <div
+              *ngIf="rowIndex !== 0"
+              class="icon icon-delete"
+              (click)="deleteItem(rowIndex, rowItem)"
+            ></div>
+          </ng-template>
+        </d-cell>
+      </d-column>
+    </d-data-table>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="pagination">
+      <d-pagination
+        [total]="pager1.total"
+        [(pageSize)]="pager1.pageSize"
+        [totalItemText]="'总条数'"
+        [(pageIndex)]="pager1.pageIndex"
+        [canViewTotal]="true"
+        [canChangePageSize]="true"
+        [lite]="true"
+        [haveConfigMenu]="true"
+      >
+        <div class="pagination-config-item">
+          <div class="config-item-title">显示字段</div>
+          <div class="config-item-words">点击设置</div>
+        </div>
+        <div class="pagination-config-item">
+          <div class="config-item-title">显示方式</div>
+          <div style="padding-left:10px;margin-top:4px">
+            <i class="icon-list-view"></i>
+            <i class="icon-veIcon-briefcase"></i>
+          </div>
+        </div>
+      </d-pagination>
+    </div>
+  </div>
+
+  <app-admin-files-chart-member
+    [member]="member"
+    [show]="showMemberEditor"
+    (submit)="onMemberSubmit()"
+    (cancel)="onMemberCancel()"
+  >
+  </app-admin-files-chart-member>
+</div>
